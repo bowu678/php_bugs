@@ -8,7 +8,7 @@
 
 ## php5.2以前
 
-- 1. `__autoload`加载类文件，但只能调用一次这个函数，所以可以用`spl_autoload_register`加载类
+1. `__autoload`加载类文件，但只能调用一次这个函数，所以可以用`spl_autoload_register`加载类
 
 ## php5.3
 
