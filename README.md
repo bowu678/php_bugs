@@ -285,7 +285,7 @@ if($temp>1336){
 
 `md5`后，`276f722736c95d99e921722cf9ed621c`
 `hex`转换成字符串：` 'or'6<trash>`
-![](./img/02.png)
+![](./img/24_1.png)
 
 构造：`?password=ffifdyop`
 
