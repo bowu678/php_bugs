@@ -321,3 +321,7 @@ if($str==0){ echo "返回了true.";}
 `$str="字符串";if($str=="0"){   echo "返回了true.";} ,`
 
 此题构造：`http://127.0.0.1/php_bug/25.php?which=aa`
+
+资料：
+
+- [PHP中字符串和数字 0 比较为什么返回true？](https://zhidao.baidu.com/question/336186893.html)
