@@ -1,4 +1,9 @@
-﻿## 01 extract变量覆盖
+﻿<center><h2>PHP代码审计分段讲解</h2></center>
+
+- **作者：薄雾**
+- **网站：[薄雾‘ s Blog](http://www.bowu8.com)**
+
+## 01 extract变量覆盖
 
 `http://127.0.0.1/Php_Bug/extract1.php?shiyan=&flag=1`
 
