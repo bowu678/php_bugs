@@ -3,7 +3,7 @@
 - **作  者：bowu**
 - **网  站：[薄雾‘ s Blog](http://www.bowu8.com)**
 - **Github: [bowu (Github)](https://github.com/bowu678)**
-- **本项目将会持续更新，请`Star`予以支持，感谢亲:)**
+- **本项目将会持续更新，请`Star`予以支持，感谢亲 :)**
 
 ## 01 extract变量覆盖
 
