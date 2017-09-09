@@ -1,6 +1,6 @@
-﻿<center><h2>PHP代码审计分段讲解</h2></center>
+﻿# PHP代码审计分段讲解
 
-- **作者：薄雾**
+- **作者：bowu**
 - **网站：[薄雾‘ s Blog](http://www.bowu8.com)**
 
 ## 01 extract变量覆盖
