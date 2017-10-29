@@ -2,12 +2,32 @@
 
 - **作  者：bowu**
 - **网  站：[薄雾‘ s Blog](http://www.bowu8.com)**
-- **Github: [bowu (Github)](https://github.com/bowu678)**
+- **Github: [bowu (Github)](https://github.com/bowu678/php_bugs)**
 - **本项目将会持续更新，请`Star`予以支持，感谢亲 :)**
+
+## 关于本项目
+
+代码审计对于很多安全圈的新人来说，一直是一件头疼的事情，也想跟着大牛们直接操刀审计CMS？却处处碰壁：
+
+- 函数看不懂！
+- 漏洞原理不知道！
+- PHP特性更不知！
+
+**那还怎么愉快审计？**
+
+不如**化繁为简**，跟着本项目先搞懂PHP中大多敏感函数与各类特性，再逐渐增加难度，直到可以吊打各类CMS~
+
+> 本项目讲解基于多道CTF题，玩CTF的WEB狗也不要错过(＾－＾)V
+
+> 题的源码在Github: [bowu (Github)](https://github.com/bowu678/php_bugs)，可以自行部署，也可以静态审计。
 
 ## 01 extract变量覆盖
 
 `http://127.0.0.1/Php_Bug/extract1.php?shiyan=&flag=1`
+
+## 02 
+
+待编辑
 
 
 ## 03 多重加密
