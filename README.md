@@ -21,6 +21,8 @@
 
 > 题的源码在Github: [bowu (Github)](https://github.com/bowu678/php_bugs)，可以自行部署，也可以静态审计。
 
+**欢迎贡献题目与解答，代表各位小白感激不尽~**
+
 ## 01 extract变量覆盖
 
 `http://127.0.0.1/Php_Bug/extract1.php?shiyan=&flag=1`
@@ -31,6 +33,9 @@
 
 `http://127.0.0.1/Php_Bug/02.php?number=%00%0c191`
 
+资料：
+
+- [PHP类型与逻辑+fuzz与源代码审计](http://www.chnpanda.com/961.html)
 
 ## 03 多重加密
 
