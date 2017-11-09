@@ -25,9 +25,11 @@
 
 `http://127.0.0.1/Php_Bug/extract1.php?shiyan=&flag=1`
 
-## 02 
+## 02 绕过过滤的空白字符
 
-待编辑
+可以引入\f（也就是%0c）在数字前面，来绕过最后那个is_palindrome_number函数，而对于前面的数字判断，因为intval和is_numeric都会忽略这个字符，所以不会影响。
+
+`http://127.0.0.1/Php_Bug/02.php?number=%00%0c191`
 
 
 ## 03 多重加密
