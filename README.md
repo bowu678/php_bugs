@@ -406,9 +406,35 @@ echo $g;
 
 查看 cookie 发现是 base64 。解密之后替换中间的 `guest` 为 `admin` 绕过登陆限制。
 
-首先会查看提交的请求中是否存在 `<>` 如果没有则将传入的数据转化为字符串。如果其中存在 `<>` 则将flag生成在一个随机命名的文件中。
-
+这段代码首先会查看提交的请求中是否存在 `<>` 如果没有则将传入的数据(如果是数组)转化为字符串。如果其中存在 `<>` 则将flag生成在一个随机命名的文件中。
 `implode()` 这个函数需要传入数组，如果传入的是字符串将报错，变量 `$s` 自然也就没有值。
+
+    if($auth){
+        if(isset($_POST['filename'])){
+            $filename = $_POST['filename'];
+            $data = $_POST['data'];
+            if(preg_match('[<>?]', $data)) {
+                die('No No No!');
+            }
+            else {
+                $s = implode($data);
+                if(!preg_match('[<>?]', $s)){
+                    $flag="None.";
+                }
+                $rand = rand(1,10000000);
+                $tmp="./uploads/".md5(time() + $rand).$filename;
+                file_put_contents($tmp, $flag);
+                echo "your file is in " . $tmp;
+            }
+        }
+        else{
+            echo "Hello admin, now you can upload something you are easy to forget.";
+            echo "<br />there are the source.<br />";
+            echo '<textarea rows="10" cols="100">';
+            echo htmlspecialchars(str_replace($flag,'flag{???}',file_get_contents(__FILE__)));
+            echo '</textarea>';
+        }
+    }
 
 ![](img/30_1.png)
 
