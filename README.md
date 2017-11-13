@@ -400,7 +400,7 @@ echo $g;
 构造：
 `http://web.jarvisoj.com:32768/index.php?class=O:6:"Shield":1:{s:4:"file";s:8:"pctf.php";}`
 
-# 利用提交数组绕过逻辑
+## 30 利用提交数组绕过逻辑
 
 首先是给了一个页面，提示 `Sorry. You have no permissions.`。
 
