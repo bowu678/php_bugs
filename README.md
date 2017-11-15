@@ -399,3 +399,45 @@ echo $g;
 `O:6:"Shield":1:{s:4:"file";s:8:"pctf.php";}`
 构造：
 `http://web.jarvisoj.com:32768/index.php?class=O:6:"Shield":1:{s:4:"file";s:8:"pctf.php";}`
+
+## 30 利用提交数组绕过逻辑
+
+首先是给了一个页面，提示 `Sorry. You have no permissions.`。
+
+查看 cookie 发现是 base64 。解密之后替换中间的 `guest` 为 `admin` 绕过登陆限制。
+
+这段代码首先会查看提交的请求中是否存在 `<>` 如果没有则将传入的数据(如果是数组)转化为字符串。如果其中存在 `<>` 则将flag生成在一个随机命名的文件中。
+`implode()` 这个函数需要传入数组，如果传入的是字符串将报错，变量 `$s` 自然也就没有值。
+
+    if($auth){
+        if(isset($_POST['filename'])){
+            $filename = $_POST['filename'];
+            $data = $_POST['data'];
+            if(preg_match('[<>?]', $data)) {
+                die('No No No!');
+            }
+            else {
+                $s = implode($data);
+                if(!preg_match('[<>?]', $s)){
+                    $flag="None.";
+                }
+                $rand = rand(1,10000000);
+                $tmp="./uploads/".md5(time() + $rand).$filename;
+                file_put_contents($tmp, $flag);
+                echo "your file is in " . $tmp;
+            }
+        }
+        else{
+            echo "Hello admin, now you can upload something you are easy to forget.";
+            echo "<br />there are the source.<br />";
+            echo '<textarea rows="10" cols="100">';
+            echo htmlspecialchars(str_replace($flag,'flag{???}',file_get_contents(__FILE__)));
+            echo '</textarea>';
+        }
+    }
+
+![](img/30_1.png)
+
+想要通过Post请求的形式传入数组可以使用 `data[0]=123&data[1]=<>` 的形式传入数组，这样的话在执行 `implode()` 函数的时候就不会使 `&s` 为空，成功绕过这段逻辑拿到flag。
+
+![](img/30_2.png)
