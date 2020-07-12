@@ -1,7 +1,7 @@
 ﻿# PHP代码审计分段讲解
 
 - **作  者：bowu**
-- **网  站：[薄雾‘ s Blog](https://www.bowu8.com)**
+- **网  站：[Bowu‘ s Blog](http://www.bowu8.com)**
 - **Github: [bowu (Github)](https://github.com/bowu678/php_bugs)**
 - **本项目将会持续更新，请`Star`予以支持，感谢亲 :)**
 
