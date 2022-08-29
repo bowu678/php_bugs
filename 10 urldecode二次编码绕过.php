@@ -1,13 +1,19 @@
-<?php
-if(eregi("hackerDJ",$_GET[id])) {
-  echo("<p>not allowed!</p>");
-  exit();
-}
+// 10 urldecode二次编码绕过 代码错误问题
 
-$_GET[id] = urldecode($_GET[id]);
-if($_GET[id] == "hackerDJ")
+<?php
+
+$id = $_GET['id'];
+
+if(preg_match("hackerDJ",$id)) {
+  echo("<p>not allowed!</p>");
+  $flag=false;
+}
+if ($flag === true) {
+$m = urldecode($id);
+if($m == "hackerDJ")
 {
   echo "<p>Access granted!</p>";
   echo "<p>flag: *****************} </p>";
+}
 }
 ?>
